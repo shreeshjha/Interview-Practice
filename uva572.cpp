@@ -72,11 +72,15 @@ Sample Output
  }
 
  bool isValid(vector<vector<char>> &graph, int i, int j) {
-   if(graph[i][j] == '@') {
-     return true;
+   if(graph[i][j] == '*') {
+     return false;
    }
-   return false;
+   else if(visited[i][j] == true) {
+     return false;
+   }
+   return true;
  }
+
  void dfs(vector<vector<char>> &graph, vector<vector<bool>> &visited, int i, int j) {
    if((!check_boundary(i, j, graph.size(), graph[0].size())) || (!isValid(graph, i, j))) {
       return;
@@ -94,7 +98,7 @@ Sample Output
  int main() {
    
    int m, n;
-   while((cin >> m >> n) && m != 0) {
+   while((cin >> m >> n) && (m != 0 && n!= 0)) {
       graph.resize(m, vector<char>(n));
       visited.resize(m, vector<bool>(n, false)); 
 
@@ -106,17 +110,13 @@ Sample Output
      int oil_port = 0;
      for(int i = 0; i < m; i++) {
        for(int j = 0; j < n; j++) {
-         if(!visited[i][j]) {
+         if(!visited[i][j] && graph[i][j] == '@') {
            dfs(graph, visited, i, j);
            oil_port++;
          }
        }
      }
-     result.push_back(oil_port);
-   }
-
-   for(int i = 0; i < result.size(); i++) {
-     cout << result[i] << "\n";
+     cout << oil_port << "\n";
    }
    cout << endl;
    return 0;
