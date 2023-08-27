@@ -58,11 +58,8 @@ Sample Output
  #include <bits/stdc++.h>
  using namespace std;
  
- vector<vector<char>> graph(101, vector<char>(101));
- vector<vector<bool>> visited(101, vector<bool>(101, false));  
- vector<int> result;
- int dr[] = {-1, -1, -1, 0, 0, 1, 1, 1};
- int dc[] = {-1, 0, 1, -1, 1, -1, 0, 1};
+ const int dr[] = {-1, -1, -1, 0, 0, 1, 1, 1};
+ const int dc[] = {-1, 0, 1, -1, 1, -1, 0, 1};
  
  bool check_boundary(int i, int j, int m, int n) {
    if(i < 0 || j < 0 || i >= m || j >= n) {
@@ -71,7 +68,7 @@ Sample Output
    return true;
  }
 
- bool isValid(vector<vector<char>> &graph, int i, int j) {
+ bool isValid(vector<vector<char>> &graph, vector<vector<bool>> &visited, int i, int j) {
    if(graph[i][j] == '*') {
      return false;
    }
@@ -82,7 +79,7 @@ Sample Output
  }
 
  void dfs(vector<vector<char>> &graph, vector<vector<bool>> &visited, int i, int j) {
-   if((!check_boundary(i, j, graph.size(), graph[0].size())) || (!isValid(graph, i, j))) {
+   if((!check_boundary(i, j, graph.size(), graph[0].size())) || (!isValid(graph, visited, i, j))) {
       return;
    } 
 
@@ -96,12 +93,23 @@ Sample Output
  }
 
  int main() {
+   ios_base::sync_with_stdio(0);
+   cin.tie(0);
+   cout.tie(0);
    
-   int m, n;
-   while((cin >> m >> n) && (m != 0 && n!= 0)) {
-      graph.resize(m, vector<char>(n));
-      visited.resize(m, vector<bool>(n, false)); 
+   #ifndef ONLINE_JUDGE
+      freopen("input.txt", "r", stdin);
+      freopen("output.txt", "w", stdout);
+   #endif
 
+   int m, n;
+
+   while(cin >> m >> n) {
+     vector<vector<char>> graph(m, vector<char>(n));
+     vector<vector<bool>> visited(m, vector<bool>(n, false));
+     if(m == 0 && n == 0) {
+     	break;
+     }
      for(int i = 0; i < m; i++) {
        for(int j = 0; j < n; j++) {
          cin >> graph[i][j];
@@ -116,8 +124,12 @@ Sample Output
          }
        }
      }
-     cout << oil_port << "\n";
+     cout << oil_port << endl;
+
+     for(int i = 0; i < m; i++) {
+       for(int j = 0; j < n; j++) {
+         visited[i][j] = false;
+       }
+     }
    }
-   cout << endl;
-   return 0;
  }
